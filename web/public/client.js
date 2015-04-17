@@ -1,7 +1,6 @@
-$(function(){
 
   var input = "";
-  $(document).keypress(function(key) {
+  $(document).keydown(function(key) {
     if (key.which === 13) {
       post($('input').val());
     }
@@ -9,25 +8,19 @@ $(function(){
 
   var post = function(value) {
     $.ajax({
-      url: 'http://127.0.0.1:8080',
+      url: 'http://127.0.0.1:8080/sites/',
       type: 'POST',
       data: value,
       contentType: 'text/plain',
-      success: function (data) {
-        console.log('chatterbox: Message sent');
-        console.log('Data: ', data);
+      success: function (chunk) {
+        console.log("data: ", chunk);
 
-        if (data.Location) {
-            // data.redirect contains the string URL to redirect to
-            window.location.href = data.Location;
-        }
+        $(body).append(chunk);
+        // console.log("data body: ", chunk.body);
+        // window.location.href = chunk;
       },
       error: function (data) {
         console.error('chatterbox: Failed to send message');
       }
     });
   }
-
-
-
-});
